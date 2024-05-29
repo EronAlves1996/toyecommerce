@@ -2,12 +2,13 @@ package com.eronalves.product;
 
 import java.net.URI;
 
-import io.quarkus.hibernate.reactive.panache.PanacheEntity;
+import com.eronalves.persistence.DefaultEntity;
+
 import jakarta.persistence.Entity;
 import jakarta.ws.rs.core.UriInfo;
 
 @Entity
-public class Product extends PanacheEntity {
+public class Product extends DefaultEntity {
 
   public String name;
   public int price;
