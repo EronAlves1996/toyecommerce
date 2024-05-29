@@ -4,12 +4,14 @@ import java.net.URI;
 
 import com.eronalves.persistence.DefaultEntity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.ws.rs.core.UriInfo;
 
 @Entity
 public class Product extends DefaultEntity {
 
+  @Column(unique = true)
   public String name;
   public int price;
 
