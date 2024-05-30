@@ -1,7 +1,5 @@
 package com.eronalves.user;
 
-import org.hibernate.Session;
-
 import com.eronalves.persistence.DefaultEntity;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
