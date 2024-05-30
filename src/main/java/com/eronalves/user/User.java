@@ -2,8 +2,6 @@ package com.eronalves.user;
 
 import java.util.List;
 
-import javax.management.relation.Role;
-
 import com.eronalves.persistence.SecureEntity;
 
 import jakarta.persistence.Column;
@@ -12,8 +10,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "app_user")
 public class User extends SecureEntity {
 
   @Column(nullable = false, unique = true)
