@@ -23,9 +23,11 @@ public class Role extends DefaultEntity {
     }
   }
 
-  public static Uni<Role> from(RoleType role) {
+  public static Role from(RoleType role) {
     return PanacheEntityBase.getSession()
-        .map(s -> s.getReference(Role.class, role.id));
+        .map(s -> s.getReference(Role.class, role.id))
+        .await()
+        .indefinitely();
   }
 
   @Column(nullable = false, unique = true)
