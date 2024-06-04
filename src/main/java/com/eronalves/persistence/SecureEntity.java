@@ -1,5 +1,7 @@
 package com.eronalves.persistence;
 
+import java.util.UUID;
+
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.SoftDeleteType;
 
@@ -14,12 +16,12 @@ import jakarta.persistence.MappedSuperclass;
  * SecureEntity
  */
 @MappedSuperclass
-@SoftDelete(columnName = "deleted_at", converter = SoftDeleteTimestampConverter.class)
+@SoftDelete(columnName = "deleted")
 public class SecureEntity extends PanacheEntityBase {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
-  public String id;
+  public UUID id;
 
   @Embedded
   public TimestampFields timestampFields;
