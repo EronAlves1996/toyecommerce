@@ -4,10 +4,13 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hibernate.annotations.SoftDelete;
+
 import com.eronalves.persistence.SecureEntity;
 import com.eronalves.user.Role.RoleType;
 import com.eronalves.user.UserResource.UserDTO;
 
+import io.smallrye.mutiny.Uni;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -19,19 +22,28 @@ import jakarta.ws.rs.core.UriInfo;
 
 @Entity
 @Table(name = "app_user")
+@SoftDelete(columnName = "deleted_at")
 public class User extends SecureEntity {
 
-  public static User from(UserDTO user) {
-    var entity = new User();
-    entity.name = user.name;
-    entity.email = user.email;
-    entity.password = user.password;
-    return entity;
+  public static Uni<User> from(UserDTO user) {
+    return User.create()
+        .invoke(entity -> {
+          entity.name = user.name();
+          entity.email = user.email();
+          entity.password = user.password();
+        });
   }
 
-  public User() {
-    super();
-    this.roles = Arrays.asList(Role.from(RoleType.CUSTOMER));
+  public static Uni<User> create() {
+    return Role.from(RoleType.CUSTOMER)
+        .map(role -> {
+          var user = new User();
+          user.roles = Arrays.asList(role);
+          return user;
+        });
+  }
+
+  protected User() {
   }
 
   @Column(nullable = false, unique = true)

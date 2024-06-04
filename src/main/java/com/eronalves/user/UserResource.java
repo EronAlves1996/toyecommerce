@@ -1,5 +1,7 @@
 package com.eronalves.user;
 
+import java.util.NoSuchElementException;
+
 import org.jboss.resteasy.reactive.RestResponse;
 
 import io.smallrye.mutiny.Uni;
@@ -18,10 +20,7 @@ import jakarta.ws.rs.core.UriInfo;
 @Path("/user")
 public class UserResource {
 
-  static class UserDTO {
-    public String email;
-    public String name;
-    public String password;
+  static record UserDTO(String email, String name, String password) {
   }
 
   private UserService userService;
@@ -39,7 +38,8 @@ public class UserResource {
 
   @POST
   public Uni<RestResponse<Void>> create(UserDTO user, UriInfo uriInfo) {
-    return this.userService.create(User.from(user))
+    return User.from(user)
+        .chain(this.userService::create)
         .map(u -> u.informPath(uriInfo))
         .map(RestResponse::created);
   }
@@ -48,8 +48,17 @@ public class UserResource {
   @Path("/{id}")
   public Uni<RestResponse<Void>> updateOrCreate(UserDTO user,
       @PathParam("id") String id, UriInfo uriInfo) {
-    return this.userService.tryUpdate(user, id);
-    // TODO: implement subsequent logic for create when user doesn't exists
+    return this.userService.tryUpdate(user, id)
+        .onItem()
+        .<RestResponse<Void>>transform(entity -> RestResponse.ok())
+        .onFailure(NoSuchElementException.class)
+        .recoverWithUni(t -> User.from(user)
+            .invoke(entity -> {
+              entity.id = id;
+            })
+            .chain(this.userService::create)
+            .map(u -> u.informPath(uriInfo))
+            .map(RestResponse::created));
   }
 
   @DELETE
