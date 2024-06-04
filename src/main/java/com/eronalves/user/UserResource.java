@@ -64,7 +64,7 @@ public class UserResource {
   @DELETE
   @Path("/{id}")
   public Uni<Void> softDelete(@PathParam("id") String id) {
-    this.userService.softDelete(id);
+    return this.userService.softDelete(id);
   }
 
 }
