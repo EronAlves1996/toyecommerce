@@ -1,6 +1,7 @@
 package com.eronalves.user;
 
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import org.jboss.resteasy.reactive.RestResponse;
 
@@ -33,7 +34,7 @@ public class UserResource {
   @GET
   @Path("/{id}")
   public Uni<User> retrieve(@PathParam("id") String id) {
-    return this.userService.retrieve(id);
+    return this.userService.retrieve(UUID.fromString(id));
   }
 
   @POST
@@ -48,13 +49,13 @@ public class UserResource {
   @Path("/{id}")
   public Uni<RestResponse<Void>> updateOrCreate(UserDTO user,
       @PathParam("id") String id, UriInfo uriInfo) {
-    return this.userService.tryUpdate(user, id)
+    return this.userService.tryUpdate(user, UUID.fromString(id))
         .onItem()
         .<RestResponse<Void>>transform(entity -> RestResponse.ok())
         .onFailure(NoSuchElementException.class)
         .recoverWithUni(t -> User.from(user)
             .invoke(entity -> {
-              entity.id = id;
+              entity.id = UUID.fromString(id);
             })
             .chain(this.userService::create)
             .map(u -> u.informPath(uriInfo))

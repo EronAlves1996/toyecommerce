@@ -1,5 +1,7 @@
 package com.eronalves.user;
 
+import java.util.UUID;
+
 import com.eronalves.user.UserResource.UserDTO;
 
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
@@ -10,7 +12,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 @WithTransaction
 public class UserService {
 
-  public Uni<User> retrieve(String id) {
+  public Uni<User> retrieve(UUID id) {
     return User.<User>findById(id)
         .onItem()
         .ifNull()
@@ -21,7 +23,7 @@ public class UserService {
     return user.<User>persist();
   }
 
-  public Uni<User> tryUpdate(UserDTO user, String id) {
+  public Uni<User> tryUpdate(UserDTO user, UUID id) {
     return this.retrieve(id)
         .invoke(entity -> {
           entity.password = user.password();
