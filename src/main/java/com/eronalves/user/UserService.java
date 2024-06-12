@@ -31,7 +31,7 @@ public class UserService {
         });
   }
 
-  public Uni<Void> softDelete(String id) {
+  public Uni<Void> softDelete(UUID id) {
     return Uni.createFrom().voidItem()
         .call(() -> User.deleteById(id));
   }

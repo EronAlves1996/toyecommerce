@@ -1,0 +1,4 @@
+config base
+-X DELETE
+variable id=ceb5fed1-28b2-48ad-8005-752f9ec3ec75
+expand-url {{baseUrl}}/{{id}}

@@ -1,0 +1,3 @@
+config base
+data "{\"email\":\"eron@eron\",\"name\":\"Eron Alves\",\"password\":\"1234\"}"
+expand-url {{baseUrl}}
