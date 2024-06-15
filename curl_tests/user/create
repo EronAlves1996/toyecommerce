@@ -1,3 +1,4 @@
-config base
+config vars
 data "{\"email\":\"eron@eron\",\"name\":\"Eron Alves\",\"password\":\"1234\"}"
-expand-url {{baseUrl}}
+expand-variable fullUrl={{baseUrl}}
+config request

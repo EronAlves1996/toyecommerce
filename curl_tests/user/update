@@ -1,5 +1,5 @@
-config base
+config vars
 -X PUT
 data "{\"name\":\"José da Silva\",\"password\":\"1234\",\"email\":\"eron@eron\"}"
-variable id=ceb5fed1-28b2-48ad-8005-752f9ec3ec75
-expand-url {{baseUrl}}/{{id}}
+expand-variable fullUrl={{baseUrl}}/{{id}}
+config request
