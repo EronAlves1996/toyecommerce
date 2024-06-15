@@ -14,7 +14,6 @@ import jakarta.persistence.MappedSuperclass;
  * CommerceEntity
  */
 @MappedSuperclass
-@SoftDelete(columnName = "deleted")
 public class DefaultEntity extends PanacheEntityBase {
 
   @Id
