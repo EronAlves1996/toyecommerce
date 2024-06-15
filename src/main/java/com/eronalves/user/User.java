@@ -4,13 +4,18 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SoftDeleteType;
+
 import com.eronalves.persistence.SecureEntity;
+import com.eronalves.persistence.TimestampFields;
 import com.eronalves.user.Role.RoleType;
 import com.eronalves.user.UserResource.UserDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.smallrye.mutiny.Uni;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -21,6 +26,7 @@ import jakarta.ws.rs.core.UriInfo;
 
 @Entity
 @Table(name = "app_user")
+@SoftDelete(strategy = SoftDeleteType.DELETED)
 public class User extends SecureEntity {
 
   public static Uni<User> from(UserDTO user) {
@@ -57,6 +63,9 @@ public class User extends SecureEntity {
   @JsonIgnore
   @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
   public List<Role> roles;
+
+  @Embedded
+  public TimestampFields timestamps;
 
   public void setPassword(String password) {
     this.password = password;

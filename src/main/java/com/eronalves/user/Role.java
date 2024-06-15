@@ -1,10 +1,12 @@
 package com.eronalves.user;
 
 import com.eronalves.persistence.DefaultEntity;
+import com.eronalves.persistence.TimestampFields;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
 import io.smallrye.mutiny.Uni;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 
 /**
