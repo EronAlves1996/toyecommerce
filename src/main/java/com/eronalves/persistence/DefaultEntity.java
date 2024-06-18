@@ -17,6 +17,4 @@ public class DefaultEntity extends PanacheEntityBase {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   public Integer id;
 
-  @Embedded
-  public TimestampFields timestampFields;
 }
